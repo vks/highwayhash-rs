@@ -10,5 +10,6 @@ fn main() {
 
     println!("cargo:rustc-link-search=native=highwayhash/bazel-out/local_linux-opt/bin");
     println!("cargo:rustc-link-lib=static=highway_tree_hash");
-    // println!("cargo:rustc-link-lib=static=mf");
+    println!("cargo:rustc-link-lib=static=sip_tree_hash");
+    println!("cargo:rustc-link-lib=static=sip_hash");
 }
