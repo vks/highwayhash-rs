@@ -16,6 +16,6 @@ bindings to three hash functions implemented in C++
 
 ## Status
 
-The bindings are in a very early state. They rely on how GCC mangles names and
-currently only work on Linux. [Bazel](http://bazel.io) is required to build the
-underlying C++ library. (All this will hopefully be fixed soon.)
+The bindings are in a very early state. They currently only work on Linux.
+[Bazel](http://bazel.io) is required to build the underlying C++ library. (All
+this will hopefully be fixed soon.)

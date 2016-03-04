@@ -1,8 +1,7 @@
 extern "C" {
-    // FIXME: The names are mangled and probably only work correctly for gcc.
-    fn _Z15HighwayTreeHashRA4_KmPKhm(key: *const u64, bytes: *const u8, size: u64) -> u64;
-    fn _Z11SipTreeHashRA4_KmPKhm(key: *const u64, bytes: *const u8, size: u64) -> u64;
-    fn _Z7SipHashPKmPKhm(key: *const u64, bytes: *const u8, size: u64) -> u64;
+    fn HighwayTreeHash(key: *const u64, bytes: *const u8, size: u64) -> u64;
+    fn SipTreeHash(key: *const u64, bytes: *const u8, size: u64) -> u64;
+    fn SipHash(key: *const u64, bytes: *const u8, size: u64) -> u64;
 }
 
 /// J-lanes tree hash based upon multiplication and "zipper merges".
@@ -16,7 +15,7 @@ extern "C" {
 /// Returns a 64-bit hash of the given data bytes.
 pub fn highway_tree_hash(key: &[u64; 4], bytes: &[u8]) -> u64 {
     unsafe {
-        _Z15HighwayTreeHashRA4_KmPKhm(key.as_ptr(), bytes.as_ptr(),
+        HighwayTreeHash(key.as_ptr(), bytes.as_ptr(),
                                       bytes.len() as u64)
     }
 }
@@ -38,7 +37,7 @@ pub fn highway_tree_hash(key: &[u64; 4], bytes: &[u8]) -> u64 {
 /// Returns a 64-bit hash of the given data bytes.
 pub fn sip_tree_hash(key: &[u64; 4], bytes: &[u8]) -> u64 {
     unsafe {
-        _Z11SipTreeHashRA4_KmPKhm(key.as_ptr(), bytes.as_ptr(),
+        SipTreeHash(key.as_ptr(), bytes.as_ptr(),
                                   bytes.len() as u64)
     }
 }
@@ -60,7 +59,7 @@ pub fn sip_tree_hash(key: &[u64; 4], bytes: &[u8]) -> u64 {
 /// Returns a 64-bit hash of the given data bytes.
 pub fn sip_hash(key: &[u64; 2], bytes: &[u8]) -> u64 {
     unsafe {
-        _Z7SipHashPKmPKhm(key.as_ptr(), bytes.as_ptr(), bytes.len() as u64)
+        SipHash(key.as_ptr(), bytes.as_ptr(), bytes.len() as u64)
     }
 }
 
