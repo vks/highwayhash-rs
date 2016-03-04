@@ -1,1 +1,6 @@
 /target
+/highwayhash/bazel-bin
+/highwayhash/bazel-genfiles
+/highwayhash/bazel-highwayhash
+/highwayhash/bazel-out
+/highwayhash/bazel-testlogs
