@@ -1,11 +1,19 @@
 extern "C" {
+    // FIXME: The names are mangled and probably only work correctly for gcc.
     fn _Z15HighwayTreeHashRA4_KmPKhm(key: *const u64, bytes: *const u8, size: u64) -> u64;
     fn _Z11SipTreeHashRA4_KmPKhm(key: *const u64, bytes: *const u8, size: u64) -> u64;
     fn _Z7SipHashPKmPKhm(key: *const u64, bytes: *const u8, size: u64) -> u64;
 }
 
-
-
+/// J-lanes tree hash based upon multiplication and "zipper merges".
+///
+/// Robust versus timing attacks because memory accesses are sequential
+/// and the algorithm is branch-free. Requires an AVX-2 capable CPU.
+///
+/// `key` is a secret 256-bit key unknown to attackers.
+/// `bytes` is the data to hash (possibly unaligned).
+///
+/// Returns a 64-bit hash of the given data bytes.
 pub fn highway_tree_hash(key: &[u64; 4], bytes: &[u8]) -> u64 {
     unsafe {
         _Z15HighwayTreeHashRA4_KmPKhm(key.as_ptr(), bytes.as_ptr(),
@@ -13,6 +21,21 @@ pub fn highway_tree_hash(key: &[u64; 4], bytes: &[u8]) -> u64 {
     }
 }
 
+/// Fast, cryptographically strong pseudo-random function. Useful for:
+/// - hash tables holding attacker-controlled data. This function is
+///   immune to hash flooding DOS attacks because multi-collisions are
+///   infeasible to compute, provided the key remains secret.
+/// - deterministic/idempotent 'random' number generation, e.g. for
+///   choosing a subset of items based on their contents.
+///
+/// Robust versus timing attacks because memory accesses are sequential
+/// and the algorithm is branch-free. Compute time is proportional to the
+/// number of 8-byte packets and 1.5x faster than an sse41 implementation.
+/// Requires an AVX-2 capable CPU.
+///
+/// `key` is a secret 256-bit key unknown to attackers.
+/// `bytes` is the data to hash (possibly unaligned).
+/// Returns a 64-bit hash of the given data bytes.
 pub fn sip_tree_hash(key: &[u64; 4], bytes: &[u8]) -> u64 {
     unsafe {
         _Z11SipTreeHashRA4_KmPKhm(key.as_ptr(), bytes.as_ptr(),
@@ -20,6 +43,21 @@ pub fn sip_tree_hash(key: &[u64; 4], bytes: &[u8]) -> u64 {
     }
 }
 
+/// Fast, cryptographically strong pseudo-random function. Useful for:
+/// - hash tables holding attacker-controlled data. This function is
+///   immune to hash flooding DOS attacks because multi-collisions are
+///   infeasible to compute, provided the key remains secret.
+/// - deterministic/idempotent 'random' number generation, e.g. for
+///   choosing a subset of items based on their contents.
+///
+/// Robust versus timing attacks because memory accesses are sequential
+/// and the algorithm is branch-free. Compute time is proportional to the
+/// number of 8-byte packets and 1.5x faster than an sse41 implementation.
+/// Requires an AVX-2 capable CPU.
+///
+/// `key` is a secret 128-bit key unknown to attackers.
+/// `bytes` is the data to hash; ceil(size / 8) * 8 bytes are read.
+/// Returns a 64-bit hash of the given data bytes.
 pub fn sip_hash(key: &[u64; 2], bytes: &[u8]) -> u64 {
     unsafe {
         _Z7SipHashPKmPKhm(key.as_ptr(), bytes.as_ptr(), bytes.len() as u64)
