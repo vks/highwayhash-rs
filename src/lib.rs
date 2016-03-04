@@ -6,21 +6,21 @@ extern "C" {
 
 
 
-fn highway_tree_hash(key: &[u64; 4], bytes: &[u8]) -> u64 {
+pub fn highway_tree_hash(key: &[u64; 4], bytes: &[u8]) -> u64 {
     unsafe {
         _Z15HighwayTreeHashRA4_KmPKhm(key.as_ptr(), bytes.as_ptr(),
                                       bytes.len() as u64)
     }
 }
 
-fn sip_tree_hash(key: &[u64; 4], bytes: &[u8]) -> u64 {
+pub fn sip_tree_hash(key: &[u64; 4], bytes: &[u8]) -> u64 {
     unsafe {
         _Z11SipTreeHashRA4_KmPKhm(key.as_ptr(), bytes.as_ptr(),
                                   bytes.len() as u64)
     }
 }
 
-fn sip_hash(key: &[u64; 2], bytes: &[u8]) -> u64 {
+pub fn sip_hash(key: &[u64; 2], bytes: &[u8]) -> u64 {
     unsafe {
         _Z7SipHashPKmPKhm(key.as_ptr(), bytes.as_ptr(), bytes.len() as u64)
     }
