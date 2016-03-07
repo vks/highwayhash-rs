@@ -21,10 +21,11 @@ pub fn highway_tree_hash(key: &[u64; 4], bytes: &[u8]) -> u64 {
 }
 
 /// Fast, cryptographically strong pseudo-random function. Useful for:
-/// - hash tables holding attacker-controlled data. This function is
+///
+/// * hash tables holding attacker-controlled data. This function is
 ///   immune to hash flooding DOS attacks because multi-collisions are
 ///   infeasible to compute, provided the key remains secret.
-/// - deterministic/idempotent 'random' number generation, e.g. for
+/// * deterministic/idempotent 'random' number generation, e.g. for
 ///   choosing a subset of items based on their contents.
 ///
 /// Robust versus timing attacks because memory accesses are sequential
@@ -43,10 +44,11 @@ pub fn sip_tree_hash(key: &[u64; 4], bytes: &[u8]) -> u64 {
 }
 
 /// Fast, cryptographically strong pseudo-random function. Useful for:
-/// - hash tables holding attacker-controlled data. This function is
+///
+/// * hash tables holding attacker-controlled data. This function is
 ///   immune to hash flooding DOS attacks because multi-collisions are
 ///   infeasible to compute, provided the key remains secret.
-/// - deterministic/idempotent 'random' number generation, e.g. for
+/// * deterministic/idempotent 'random' number generation, e.g. for
 ///   choosing a subset of items based on their contents.
 ///
 /// Robust versus timing attacks because memory accesses are sequential
