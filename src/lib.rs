@@ -91,7 +91,7 @@ pub fn sip_hash_sse41(key: &[u64; 2], bytes: &[u8]) -> u64 {
 fn test_highway_tree_hash() {
     let key = [1, 2, 3, 4];
     let bytes = [12, 23, 234, 123, 123, 2, 4];
-    assert_eq!(highway_tree_hash(&key, &bytes), 2515751569969494610);
+    assert_eq!(highway_tree_hash(&key, &bytes), 12047785261820867033);
     // TODO: Verify this is the correct value.
 }
 
