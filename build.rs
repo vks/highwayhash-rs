@@ -13,4 +13,5 @@ fn main() {
     println!("cargo:rustc-link-lib=static=sip_tree_hash");
     println!("cargo:rustc-link-lib=static=sip_hash");
     println!("cargo:rustc-link-lib=static=sse41_sip_hash");
+    println!("cargo:rustc-link-lib=static=sse41_highway_tree_hash");
 }
