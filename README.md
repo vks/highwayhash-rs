@@ -1,6 +1,6 @@
 # highwayhash-rs
 
-Rust Bindings to AVX-2-optimized SIP-like hash functions.  This crate offers
+Rust Bindings to AVX-2-optimized SIP-like hash functions. This crate offers
 bindings to three hash functions implemented in C++
 [here](https://github.com/google/highwayhash):
 
@@ -13,6 +13,9 @@ bindings to three hash functions implemented in C++
 - `highway_tree_hash`: A new way of mixing the inputs using AVX-2 instructions.
   The security guarantees are not well established, but this gives another 2-3
   times speedup, especially for smaller inputs.
+
+For `sip_hash` and `highway_tree_hash` there are SSE4.1-based implementations
+available as well.
 
 ## Status
 
