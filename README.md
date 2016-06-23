@@ -19,6 +19,6 @@ available as well.
 
 ## Status
 
-The bindings are in a very early state. They currently only work on Linux.
-[Bazel](http://bazel.io) is required to build the underlying C++ library. (All
-this will hopefully be fixed soon.)
+The bindings are in an early state. They currently should work on Unix, but are
+only tested on Linux.  [Bazel](http://bazel.io) is required to build the
+underlying C++ library.
