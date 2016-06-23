@@ -1,7 +1,8 @@
 extern "C" {
-    fn ScalarSipTreeHash(key: *const u64, bytes: *const u8, size: u64) -> u64;
-//    fn SipHash(key: *const u64, bytes: *const u8, size: u64) -> u64;
-    fn SipTreeHash(key: *const u64, bytes: *const u8, size: u64) -> u64;
+    fn SipHashC(key: *const u64, bytes: *const u8, size: u64) -> u64;
+
+    fn SipTreeHashC(key: *const u64, bytes: *const u8, size: u64) -> u64;
+    fn ScalarSipTreeHashC(key: *const u64, bytes: *const u8, size: u64) -> u64;
 
     fn ScalarHighwayTreeHashC(key: *const u64, bytes: *const u8, size: u64) -> u64;
     fn SSE41HighwayTreeHashC(key: *const u64, bytes: *const u8, size: u64) -> u64;
@@ -59,8 +60,8 @@ pub fn highway_tree_hash(key: &[u64; 4], bytes: &[u8]) -> u64 {
 /// Returns a 64-bit hash of the given data bytes.
 pub fn sip_tree_hash(key: &[u64; 4], bytes: &[u8]) -> u64 {
     unsafe {
-        SipTreeHash(key.as_ptr(), bytes.as_ptr(),
-                                  bytes.len() as u64)
+        SipTreeHashC(key.as_ptr(), bytes.as_ptr(),
+                     bytes.len() as u64)
     }
 }
 
@@ -82,12 +83,11 @@ pub fn sip_tree_hash(key: &[u64; 4], bytes: &[u8]) -> u64 {
 /// Returns a 64-bit hash of the given data bytes.
 pub fn sip_tree_hash_scalar(key: &[u64; 4], bytes: &[u8]) -> u64 {
     unsafe {
-        ScalarSipTreeHash(key.as_ptr(), bytes.as_ptr(),
-                          bytes.len() as u64)
+        ScalarSipTreeHashC(key.as_ptr(), bytes.as_ptr(),
+                           bytes.len() as u64)
     }
 }
 
-/*
 /// Fast, cryptographically strong pseudo-random function. Useful for:
 ///
 /// * hash tables holding attacker-controlled data. This function is
@@ -107,10 +107,9 @@ pub fn sip_tree_hash_scalar(key: &[u64; 4], bytes: &[u8]) -> u64 {
 /// Returns a 64-bit hash of the given data bytes.
 pub fn sip_hash(key: &[u64; 2], bytes: &[u8]) -> u64 {
     unsafe {
-        SipHash(key.as_ptr(), bytes.as_ptr(), bytes.len() as u64)
+        SipHashC(key.as_ptr(), bytes.as_ptr(), bytes.len() as u64)
     }
 }
-*/
 
 /// J-lanes tree hash based upon multiplication and "zipper merges".
 ///
@@ -168,7 +167,6 @@ fn test_sip_tree_hash_scalar() {
     // TODO: Verify this is the correct value.
 }
 
-/*
 #[test]
 fn test_sip_hash() {
     let key = [1, 2];
@@ -176,5 +174,3 @@ fn test_sip_hash() {
     assert_eq!(sip_hash(&key, &bytes), 16073328535944263387);
     // TODO: Verify this is the correct value.
 }
-*/
-
