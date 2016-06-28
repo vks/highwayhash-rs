@@ -1,3 +1,5 @@
+use std::hash::Hasher;
+
 extern "C" {
     fn SipHashC(key: *const u64, bytes: *const u8, size: u64) -> u64;
 
@@ -126,6 +128,53 @@ pub fn highway_tree_hash_sse41(key: &[u64; 4], bytes: &[u8]) -> u64 {
                                       bytes.len() as u64)
     }
 }
+
+#[derive(Clone, Debug)]
+struct HighwayHasher {
+    key: [u64; 4],
+    hash: u64,
+}
+
+impl HighwayHasher {
+    fn new() -> HighwayHasher {
+        HighwayHasher {
+            key: [0, 0, 0, 0],
+            hash: 0,
+        }
+    }
+
+    fn new_with_key(key: [u64; 4]) -> HighwayHasher {
+        HighwayHasher {
+            key: key,
+            hash: 0,
+        }
+    }
+}
+
+impl std::default::Default for HighwayHasher {
+    fn default() -> Self {
+        HighwayHasher::new()
+    }
+}
+
+impl std::hash::Hasher for HighwayHasher {
+    fn finish(&self) -> u64 {
+        self.hash
+    }
+
+    fn write(&mut self, msg: &[u8]) {
+        let lhs = self.hash;
+        let rhs = highway_tree_hash(&self.key, msg);
+        // Ideally we want to use the hash function to combine with the old value.
+        // This is however not possible without allocation with the current interface. So we use a
+        // way to combine hashes proposed in
+        // https://stackoverflow.com/questions/5889238/why-is-xor-the-default-way-to-combine-hashes
+        self.hash ^= rhs.wrapping_add(0x9e3779b97f4a7c16)
+                        .wrapping_add(lhs << 6)
+                        .wrapping_add(lhs >> 2);
+    }
+}
+
 
 #[test]
 fn test_highway_tree_hash() {
