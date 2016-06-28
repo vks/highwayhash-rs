@@ -5,7 +5,7 @@ bindings to three hash functions implemented in C++
 [here](https://github.com/google/highwayhash):
 
 - `sip_hash`: An AVX-2 implementation of the SIP hash function, that is about
-  1.5 times faster the the SSE4.1 [reference
+  1.5 times faster than the SSE4.1 [reference
   implementation](https://github.com/floodyberry/supercop/blob/master/crypto_auth/siphash24/sse41/siphash.c).
 - `sip_tree_hash`: Partitions the input into interleaved streams and hashes them
   independently. Results are combined using the SIP hash function. This retains
