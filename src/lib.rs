@@ -1,9 +1,9 @@
 #![feature(test)]
+extern crate core;
 extern crate test;
 
+use core::hash::{Hash, Hasher};
 use test::{Bencher, black_box};
-
-use std::hash::{Hash, Hasher};
 
 extern "C" {
     fn SipHashC(key: *const u64, bytes: *const u8, size: u64) -> u64;
@@ -156,13 +156,13 @@ impl HighwayHasher {
     }
 }
 
-impl std::default::Default for HighwayHasher {
+impl core::default::Default for HighwayHasher {
     fn default() -> Self {
         HighwayHasher::new()
     }
 }
 
-impl std::hash::Hasher for HighwayHasher {
+impl Hasher for HighwayHasher {
     fn finish(&self) -> u64 {
         self.hash
     }
@@ -231,18 +231,21 @@ fn test_sip_hash() {
 
 /// std tests
 
+#[cfg(test)]
 fn hash<T: Hash>(x: &T) -> u64 {
     let mut st = HighwayHasher::new();
     x.hash(&mut st);
     st.finish()
 }
 
+#[cfg(test)]
 fn hash_with_keys<T: Hash>(k1: u64, k2: u64, x: &T) -> u64 {
     let mut st = HighwayHasher::new_with_key([k1, k2, 0, 0]);
     x.hash(&mut st);
     st.finish()
 }
 
+#[cfg(test)]
 fn hash_bytes(x: &[u8]) -> u64 {
     let mut s = HighwayHasher::default();
     Hasher::write(&mut s, x);
