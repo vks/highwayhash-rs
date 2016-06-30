@@ -134,7 +134,7 @@ pub fn highway_tree_hash_sse41(key: &[u64; 4], bytes: &[u8]) -> u64 {
 
 #[derive(Clone, Debug)]
 /// std-Wrapper for `highway_tree_hash`.
-struct HighwayHasher {
+pub struct HighwayHasher {
     key: [u64; 4],
     hash: u64,
 }
