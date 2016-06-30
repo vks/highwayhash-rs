@@ -140,14 +140,14 @@ pub struct HighwayHasher {
 }
 
 impl HighwayHasher {
-    fn new() -> HighwayHasher {
+    pub fn new() -> HighwayHasher {
         HighwayHasher {
             key: [0, 0, 0, 0],
             hash: 0,
         }
     }
 
-    fn new_with_key(key: [u64; 4]) -> HighwayHasher {
+    pub fn new_with_key(key: [u64; 4]) -> HighwayHasher {
         HighwayHasher {
             key: key,
             hash: 0,
