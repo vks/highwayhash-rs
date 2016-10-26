@@ -20,5 +20,4 @@ available as well.
 ## Status
 
 The bindings are in an early state. They currently should work on Unix, but are
-only tested on Linux.  [Bazel](http://bazel.io) is required to build the
-underlying C++ library.
+only tested on Linux. `make` is required to build the underlying C++ library.
