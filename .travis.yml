@@ -2,6 +2,10 @@ language: rust
 rust:
     - nightly
 compiler:
-    - clang
-env:
-    - CXX=clang++
+    - g++-6
+addons:
+    apt:
+        sources:
+            - ubuntu-toolchain-r-test
+        packages:
+            - g++-6
