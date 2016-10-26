@@ -6,10 +6,14 @@ fn main() {
     // Rust requires position-independent code for any static library.
     env::set_var("CPPFLAGS", "-fPIC");
     env::set_var("CFLAGS", "-fPIC");
-    Command::new("make").args(&["libhighwayhash.a"])
+    let status = Command::new("make").args(&["libhighwayhash.a"])
         .status()
         .expect("Failed to run make. \
-                 Please make sure it is installed and that your CPU supports AVX2.");
+                 Please make sure it is installed");
+    if !status.success() {
+        panic!("make exited with an error. \
+                Please make sure that your CPU supports AVX2.");
+    }
 
     println!("cargo:rustc-link-search=native=highwayhash");
     println!("cargo:rustc-link-lib=static=highwayhash");
