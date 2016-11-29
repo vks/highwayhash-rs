@@ -11,8 +11,7 @@ fn main() {
         .expect("Failed to run make. \
                  Please make sure it is installed");
     if !status.success() {
-        panic!("make exited with an error. \
-                Please make sure that your CPU supports AVX2.");
+        panic!("make exited with an error.");
     }
 
     println!("cargo:rustc-link-search=native=third_party/highwayhash");
