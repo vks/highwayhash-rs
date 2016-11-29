@@ -2,7 +2,7 @@ use std::process::Command;
 use std::env;
 
 fn main() {
-    std::env::set_current_dir("highwayhash").unwrap();
+    std::env::set_current_dir("third_party/highwayhash").unwrap();
     // Rust requires position-independent code for any static library.
     env::set_var("CPPFLAGS", "-fPIC");
     env::set_var("CFLAGS", "-fPIC");
@@ -15,6 +15,6 @@ fn main() {
                 Please make sure that your CPU supports AVX2.");
     }
 
-    println!("cargo:rustc-link-search=native=highwayhash");
+    println!("cargo:rustc-link-search=native=third_party/highwayhash");
     println!("cargo:rustc-link-lib=static=highwayhash");
 }
