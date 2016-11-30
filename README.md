@@ -17,6 +17,8 @@ bindings to three hash functions implemented in C++
 For `sip_hash` and `highway_tree_hash` there are SSE4.1-based implementations
 available as well.
 
+Note that calling the functions using AVX-2 will fail at runtime with "illegal instruction" if your platform does not support AVX-2.
+
 ## Status
 
 The bindings are in an early state. They currently should work on Unix, but are
