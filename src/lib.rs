@@ -1,5 +1,6 @@
 #![no_std]
 #![feature(test)]
+#![feature(cfg_target_feature)]
 extern crate test;
 
 
@@ -8,7 +9,9 @@ extern "C" {
     fn SipHash13C(key: *const u64, bytes: *const u8, size: u64) -> u64;
 
     fn HighwayHash64_TargetPortable(key: *const u64, bytes: *const u8, size: u64) -> u64;
+    #[cfg(target_feature = "sse4.1")]
     fn HighwayHash64_TargetSSE41(key: *const u64, bytes: *const u8, size: u64) -> u64;
+    #[cfg(target_feature = "avx2")]
     fn HighwayHash64_TargetAVX2(key: *const u64, bytes: *const u8, size: u64) -> u64;
     fn HighwayHash64_Dispatcher(key: *const u64, bytes: *const u8, size: u64) -> u64;
 }
@@ -35,6 +38,7 @@ pub fn highwayhash64_portable(key: &[u64; 4], bytes: &[u8]) -> u64 {
 }
 
 /// Returns a 64-bit hash of the given data bytes.
+#[cfg(target_feature = "sse4.1")]
 pub fn highwayhash64_sse41(key: &[u64; 4], bytes: &[u8]) -> u64 {
     unsafe {
         HighwayHash64_TargetSSE41(key.as_ptr(), bytes.as_ptr(), bytes.len() as u64)
@@ -42,6 +46,7 @@ pub fn highwayhash64_sse41(key: &[u64; 4], bytes: &[u8]) -> u64 {
 }
 
 /// Returns a 64-bit hash of the given data bytes.
+#[cfg(target_feature = "avx2")]
 pub fn highwayhash64_avx2(key: &[u64; 4], bytes: &[u8]) -> u64 {
     unsafe {
         HighwayHash64_TargetAVX2(key.as_ptr(), bytes.as_ptr(), bytes.len() as u64)
@@ -124,6 +129,7 @@ mod test_highway {
     }
 
     #[test]
+    #[cfg(target_feature = "sse4.1")]
     fn test_highwayhash64_sse41() {
         let key = [1, 2, 3, 4];
         let bytes = [12, 23, 234, 123, 123, 2, 4];
@@ -132,6 +138,7 @@ mod test_highway {
     }
 
     #[test]
+    #[cfg(target_feature = "avx2")]
     fn test_highwayhash64_avx2() {
         let key = [1, 2, 3, 4];
         let bytes = [12, 23, 234, 123, 123, 2, 4];
