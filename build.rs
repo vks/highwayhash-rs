@@ -1,12 +1,10 @@
 use std::process::Command;
-use std::env;
 
 fn main() {
     std::env::set_current_dir("highwayhash").unwrap();
-    // Rust requires position-independent code for any static library.
-    env::set_var("CPPFLAGS", "-fPIC");
-    env::set_var("CFLAGS", "-fPIC");
-    let status = Command::new("make").args(&["libhighwayhash.a"])
+    let status = Command::new("make")
+        // Rust requires position-independent code for any static library.
+        .args(&["HH_CXXFLAGS=-fPIC", "libhighwayhash.a"])
         .status()
         .expect("Failed to run make. \
                  Please make sure it is installed");
