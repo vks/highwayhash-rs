@@ -16,6 +16,8 @@ extern "C" {
     fn HighwayHash64_Dispatcher(key: *const u64, bytes: *const u8, size: u64) -> u64;
 }
 
+/// An implementation of SipHash 2-4.
+///
 /// Returns a 64-bit hash of the given data bytes.
 pub fn siphash(key: &[u64; 2], bytes: &[u8]) -> u64 {
     unsafe {
@@ -23,6 +25,8 @@ pub fn siphash(key: &[u64; 2], bytes: &[u8]) -> u64 {
     }
 }
 
+/// An implementation of SipHash 1-3.
+///
 /// Returns a 64-bit hash of the given data bytes.
 pub fn siphash13(key: &[u64; 2], bytes: &[u8]) -> u64 {
     unsafe {
@@ -30,14 +34,26 @@ pub fn siphash13(key: &[u64; 2], bytes: &[u8]) -> u64 {
     }
 }
 
+/// HighwayHash is a strong pseudorandom function with security claims. It is
+/// intended as a safer general-purpose hash, about 4x faster than SipHash and
+/// 10x faster than BLAKE2.
+///
 /// Returns a 64-bit hash of the given data bytes.
+///
+/// This is a portable implementation not relying on specific instruction sets.
 pub fn highwayhash64_portable(key: &[u64; 4], bytes: &[u8]) -> u64 {
     unsafe {
         HighwayHash64_TargetPortable(key.as_ptr(), bytes.as_ptr(), bytes.len() as u64)
     }
 }
 
+/// HighwayHash is a strong pseudorandom function with security claims. It is
+/// intended as a safer general-purpose hash, about 4x faster than SipHash and
+/// 10x faster than BLAKE2.
+///
 /// Returns a 64-bit hash of the given data bytes.
+///
+/// This implementation relies on SSE4.1 instructions.
 #[cfg(target_feature = "sse4.1")]
 pub fn highwayhash64_sse41(key: &[u64; 4], bytes: &[u8]) -> u64 {
     unsafe {
@@ -45,7 +61,14 @@ pub fn highwayhash64_sse41(key: &[u64; 4], bytes: &[u8]) -> u64 {
     }
 }
 
+/// HighwayHash is a strong pseudorandom function with security claims. It is
+/// intended as a safer general-purpose hash, about 4x faster than SipHash and
+/// 10x faster than BLAKE2.
+///
 /// Returns a 64-bit hash of the given data bytes.
+///
+/// This implementation relies on AVX2 instruction and is the fastest available
+/// implementation.
 #[cfg(target_feature = "avx2")]
 pub fn highwayhash64_avx2(key: &[u64; 4], bytes: &[u8]) -> u64 {
     unsafe {
@@ -53,7 +76,13 @@ pub fn highwayhash64_avx2(key: &[u64; 4], bytes: &[u8]) -> u64 {
     }
 }
 
+/// HighwayHash is a strong pseudorandom function with security claims. It is
+/// intended as a safer general-purpose hash, about 4x faster than SipHash and
+/// 10x faster than BLAKE2.
+///
 /// Returns a 64-bit hash of the given data bytes.
+///
+/// This uses the fastest available implementation.
 pub fn highwayhash64(key: &[u64; 4], bytes: &[u8]) -> u64 {
     unsafe {
         HighwayHash64_Dispatcher(key.as_ptr(), bytes.as_ptr(), bytes.len() as u64)
@@ -62,7 +91,7 @@ pub fn highwayhash64(key: &[u64; 4], bytes: &[u8]) -> u64 {
 
 
 #[derive(Clone, Debug)]
-/// std-Wrapper for `highway_tree_hash`.
+/// std-Wrapper for `highwayhash`.
 pub struct HighwayHasher {
     key: [u64; 4],
     hash: u64,
