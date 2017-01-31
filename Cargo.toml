@@ -8,3 +8,4 @@ repository = "https://github.com/vks/highwayhash-rs"
 readme = "README.md"
 license = "Apache-2.0"
 build = "build.rs"
+exclude = ["highwayhash/highwayhash_logo.png"]
