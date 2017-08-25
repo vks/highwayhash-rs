@@ -7,13 +7,12 @@ extern crate test;
 extern "C" {
     fn SipHashC(key: *const u64, bytes: *const u8, size: u64) -> u64;
     fn SipHash13C(key: *const u64, bytes: *const u8, size: u64) -> u64;
-
-    fn HighwayHash64_TargetPortable(key: *const u64, bytes: *const u8, size: u64) -> u64;
+    fn HighwayHash64_Portable(key: *const u64, bytes: *const u8, size: u64) -> u64;
     #[cfg(target_feature = "sse4.1")]
-    fn HighwayHash64_TargetSSE41(key: *const u64, bytes: *const u8, size: u64) -> u64;
+    fn HighwayHash64_SSE41(key: *const u64, bytes: *const u8, size: u64) -> u64;
     #[cfg(target_feature = "avx2")]
-    fn HighwayHash64_TargetAVX2(key: *const u64, bytes: *const u8, size: u64) -> u64;
-    fn HighwayHash64_Dispatcher(key: *const u64, bytes: *const u8, size: u64) -> u64;
+    fn HighwayHash64_AVX2(key: *const u64, bytes: *const u8, size: u64) -> u64;
+    fn HighwayHash64(key: *const u64, bytes: *const u8, size: u64) -> u64;
 }
 
 /// An implementation of SipHash 2-4.
@@ -43,7 +42,7 @@ pub fn siphash13(key: &[u64; 2], bytes: &[u8]) -> u64 {
 /// This is a portable implementation not relying on specific instruction sets.
 pub fn highwayhash64_portable(key: &[u64; 4], bytes: &[u8]) -> u64 {
     unsafe {
-        HighwayHash64_TargetPortable(key.as_ptr(), bytes.as_ptr(), bytes.len() as u64)
+        HighwayHash64_Portable(key.as_ptr(), bytes.as_ptr(), bytes.len() as u64)
     }
 }
 
@@ -57,7 +56,7 @@ pub fn highwayhash64_portable(key: &[u64; 4], bytes: &[u8]) -> u64 {
 #[cfg(target_feature = "sse4.1")]
 pub fn highwayhash64_sse41(key: &[u64; 4], bytes: &[u8]) -> u64 {
     unsafe {
-        HighwayHash64_TargetSSE41(key.as_ptr(), bytes.as_ptr(), bytes.len() as u64)
+        HighwayHash64_SSE41(key.as_ptr(), bytes.as_ptr(), bytes.len() as u64)
     }
 }
 
@@ -72,7 +71,7 @@ pub fn highwayhash64_sse41(key: &[u64; 4], bytes: &[u8]) -> u64 {
 #[cfg(target_feature = "avx2")]
 pub fn highwayhash64_avx2(key: &[u64; 4], bytes: &[u8]) -> u64 {
     unsafe {
-        HighwayHash64_TargetAVX2(key.as_ptr(), bytes.as_ptr(), bytes.len() as u64)
+        HighwayHash64_AVX2(key.as_ptr(), bytes.as_ptr(), bytes.len() as u64)
     }
 }
 
@@ -85,7 +84,7 @@ pub fn highwayhash64_avx2(key: &[u64; 4], bytes: &[u8]) -> u64 {
 /// This uses the fastest available implementation.
 pub fn highwayhash64(key: &[u64; 4], bytes: &[u8]) -> u64 {
     unsafe {
-        HighwayHash64_Dispatcher(key.as_ptr(), bytes.as_ptr(), bytes.len() as u64)
+        HighwayHash64(key.as_ptr(), bytes.as_ptr(), bytes.len() as u64)
     }
 }
 
