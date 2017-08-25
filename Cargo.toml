@@ -2,7 +2,7 @@
 name = "highwayhash"
 description = "Bindings to AVX-2-optimized SIP-like hash functions"
 categories = ["algorithms", "cryptography", "no-std"]
-version = "0.0.12"
+version = "0.0.13"
 authors = ["Vinzent Steinberg <Vinzent.Steinberg@gmail.com>"]
 repository = "https://github.com/vks/highwayhash-rs"
 readme = "README.md"
