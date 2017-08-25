@@ -1,7 +1,7 @@
 [package]
 name = "highwayhash"
 description = "Bindings to AVX-2-optimized SIP-like hash functions"
-categories = ["Algorithms", "Cryptography"]
+categories = ["algorithms", "cryptography", "no-std"]
 version = "0.0.12"
 authors = ["Vinzent Steinberg <Vinzent.Steinberg@gmail.com>"]
 repository = "https://github.com/vks/highwayhash-rs"
